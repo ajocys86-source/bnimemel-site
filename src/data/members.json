@@ -1,0 +1,32 @@
+[
+  {
+    "category": "Rinkodara",
+    "role": "Rinkodaros strategija",
+    "description": "Pavyzdinis pristatymas: padedu verslui aiškiau įvardyti savo vertę, pasirinkti komunikacijos kryptį ir pasiekti aktualią auditoriją."
+  },
+  {
+    "category": "Finansai",
+    "role": "Finansų valdymas",
+    "description": "Pavyzdinis pristatymas: padedu suprasti finansinius rodiklius, planuoti pinigų srautus ir priimti pagrįstus verslo sprendimus."
+  },
+  {
+    "category": "Teisė",
+    "role": "Verslo teisė",
+    "description": "Pavyzdinis pristatymas: padedu įmonėms aptarti sutartinius santykius, suprasti teisinius klausimus ir pasirengti bendradarbiavimui."
+  },
+  {
+    "category": "Nekilnojamasis turtas",
+    "role": "Nekilnojamojo turto sprendimai",
+    "description": "Pavyzdinis pristatymas: padedu orientuotis nekilnojamojo turto klausimuose ir įvertinti galimus sprendimus."
+  },
+  {
+    "category": "Technologijos",
+    "role": "Skaitmeniniai sprendimai",
+    "description": "Pavyzdinis pristatymas: padedu verslui aptarti skaitmenizavimo poreikius, procesus ir tinkamą technologinę kryptį."
+  },
+  {
+    "category": "Verslo paslaugos",
+    "role": "Verslo procesų konsultacijos",
+    "description": "Pavyzdinis pristatymas: padedu komandoms pažvelgti į darbo procesus, išgryninti prioritetus ir susitarti dėl tolesnių veiksmų."
+  }
+]
