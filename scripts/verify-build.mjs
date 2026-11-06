@@ -20,9 +20,11 @@ for (const [, target] of html.matchAll(/data-page="([^"]+)"/g)) {
 }
 assert(html.includes('lang="lt"'), 'Lithuanian language declaration missing');
 assert(html.includes('noindex,nofollow'), 'Review robots directive missing');
-assert(html.includes('Svetainės peržiūra · registracijos formos demonstracinės'), 'Review notice missing');
+assert(html.includes('Svetainės peržiūra · svečių registracija oficialioje BNI sistemoje'), 'Review notice missing');
 assert(html.includes('Duomenys iš oficialaus BNI Memel sąrašo · patikrinta 2026-11-06'), 'Member source and verification date missing');
-assert.equal((content.match(/onsubmit="return false"/g) ?? []).length, 2, 'Both demo forms must block native submission');
+assert(!/<form\b/i.test(content), 'Local demo forms must be removed');
+assert(content.includes('https://bni.lt/lt/visitorregistration?chapterId=22056'), 'Official Memel registration is required');
+for (const value of ['Trečiadieniais, 6:45', 'AURORA HOTEL KLAIPĖDA', 'Nemuno g. 51', 'tel:+37069577881', 'tel:+37062026845', 'tel:+37063768868']) assert(content.includes(value), `Missing official meeting/contact detail: ${value}`);
 assert(!/openai|widgetState|globalThis\.Tweak|set_globals/.test(sourceScript), 'Preview host APIs must not ship');
 assert(!/fetch\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage/.test(sourceScript), 'Demo must not send or store visitor data');
 assert(sourceScript.includes("window.addEventListener('hashchange'"), 'History support missing');
