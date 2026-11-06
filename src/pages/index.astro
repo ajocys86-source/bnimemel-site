@@ -1,0 +1,25 @@
+---
+import approvedContent from '../content/approved.html?raw';
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const content = approvedContent.replaceAll('__BASE__', base);
+---
+<!doctype html>
+<html lang="lt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content="BNI Memel verslo klubo svetainės peržiūra: klubo pristatymas, pavyzdinis narių katalogas, narystė ir apsilankymas susitikime." />
+    <meta name="theme-color" content="#c8102e" />
+    <title>BNI Memel – verslo klubas Klaipėdoje · Svetainės peržiūra</title>
+    <link rel="icon" type="image/jpeg" href={`${base}assets/memel-facebook-logo.jpg`} />
+    <link rel="stylesheet" href={`${base}styles.css`} />
+  </head>
+  <body>
+    <Fragment set:html={content} />
+    <noscript><p style="padding:24px;font-family:Arial,Helvetica,sans-serif">Svetainės peržiūros puslapiams, paieškai ir demonstracinėms formoms reikia įjungto JavaScript.</p></noscript>
+    <script>
+      import '../scripts/site.js';
+    </script>
+  </body>
+</html>
