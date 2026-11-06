@@ -206,3 +206,14 @@ html{background:#fff}body{margin:0}
 #bni-memel-complete .m-reading-layout{margin-top:30px}
 #bni-memel-complete .m-reading-copy h2{font-size:28px}
 }
+
+/* Official member portraits retain the approved card and profile grouping. */
+#bni-memel-complete .m-member-art{padding:22px 0;display:block}
+#bni-memel-complete .m-member-photo{display:block;width:100%;height:260px;object-fit:cover;object-position:center top}
+#bni-memel-complete .m-member-no-photo{min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border:1px solid #000;text-align:center;padding:24px;font-size:16px}
+#bni-memel-complete .m-member-no-photo .m-icon{width:48px;height:48px;flex-basis:48px}
+#bni-memel-complete .m-member-no-photo .m-icon svg{width:48px;height:48px}
+#bni-memel-complete .m-profile-portrait{border-top:3px solid #c8102e}
+#bni-memel-complete .m-profile-photo{display:block;width:100%;height:auto;max-height:440px;object-fit:cover;object-position:center top}
+#bni-memel-complete .m-profile-portrait .m-member-no-photo{min-height:310px;border-top:0}
+@media(max-width:760px){#bni-memel-complete .m-profile-portrait{max-width:390px}}
