@@ -1,5 +1,6 @@
 import { createIcons, Users, MessageCircle, Handshake, Camera, CalendarDays, Building2, Phone, CircleCheck, BriefcaseBusiness, Search, SlidersHorizontal, Info, Calculator, HardHat, Megaphone, FilePenLine, ChartNoAxesCombined, Scale, Monitor, Mail, MapPin, ShieldCheck, BookOpen, FileText, ListChecks, UserRoundCheck, UserRound } from "lucide";
 import memberRoster from "../data/members.json";
+import leadership from "../data/leadership.json";
 const icons = { Users, MessageCircle, Handshake, Camera, CalendarDays, Building2, Phone, CircleCheck, BriefcaseBusiness, Search, SlidersHorizontal, Info, Calculator, HardHat, Megaphone, FilePenLine, ChartNoAxesCombined, Scale, Monitor, Mail, MapPin, ShieldCheck, BookOpen, FileText, ListChecks, UserRoundCheck, UserRound };
 
 (function(){
@@ -13,7 +14,7 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
 const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, character => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[character]);
 const normalize = value => String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("lt-LT").trim();
 const memberCategory = member => member.category || member.role;
-const memberPhoto = member => member.photo ? base + member.photo.replace(/^\/+/, "") : null;
+const memberPhoto = member => member.photo ? base + member.photo.replace(/^\/+/, "") + (member.photoVersion ? '?v=' + encodeURIComponent(member.photoVersion) : '') : null;
 const storyTitles=['Aštuntasis BNI Memel gimtadienis','Pirmas apsilankymas verslo klube: nario patirtis','Skirtingų sričių specialistų bendradarbiavimas'];
 const storySubtitles=['Šventė, žmonės ir pažintys','Ką narys sužinojo apsilankęs?','Kokių kompetencijų reikėjo projektui?'];
 const storyIntros=['Oficialiame BNI Memel LinkedIn įraše klubas pasidalijo aštuntojo gimtadienio akimirkomis: renginio sale, dalyviais ir šventiniu tortu.','Kokią mintį, pažintį ar naują požiūrį galima parsinešti iš susitikimo? Šioje vietoje galėtų atsirasti tikro nario patirtis.','Kaip skirtingų sričių specialistai atranda bendrą projektą? Šioje vietoje galėtų būti papasakotas patvirtintas bendradarbiavimo atvejis.'];
@@ -27,7 +28,7 @@ function resolveMember(id) {
 function portrait(member, profile = false) {
   const photo = memberPhoto(member);
   return photo
-    ? '<img class="' + (profile ? 'm-profile-photo' : 'm-member-photo') + '" src="' + escapeHTML(photo) + '" alt="' + escapeHTML(member.name) + '" loading="lazy">'
+    ? '<img class="' + (profile ? 'm-profile-photo' : 'm-member-photo') + '" src="' + escapeHTML(photo) + '" alt="' + escapeHTML(member.name) + '" width="' + (member.photoWidth || 878) + '" height="' + (member.photoHeight || 878) + '" loading="lazy" decoding="async">'
     : '<div class="m-member-no-photo"><span class="m-icon"><i data-lucide="user-round" aria-hidden="true"></i></span><span>Nuotrauka nepateikta</span></div>';
 }
 function updateProfile(id) {
@@ -48,6 +49,14 @@ function showPage(page,fromUser){current=pages.includes(page)?page:'home';root.q
 function card(member) {
   return '<article class="m-member"><div class="m-member-art">' + portrait(member) + '</div><div class="m-member-body"><h3>' + escapeHTML(member.name) + '</h3><p class="m-small">' + escapeHTML(member.company) + '</p><p>' + escapeHTML(member.role) + '</p><button class="m-textlink cursor-interaction" data-member="' + escapeHTML(member.id) + '" aria-label="Peržiūrėti profilį: ' + escapeHTML(member.name) + '">Nario profilis</button></div></article>';
 }
+function leadershipCard(leader) {
+  const member = members.find(member => member.id === leader.memberId);
+  if (!member) return '';
+  return '<article class="m-leader"><div class="m-leader-art">' + portrait(member) + '</div><div class="m-leader-body"><h3>' + escapeHTML(member.name) + '</h3><p class="m-leader-position">' + escapeHTML(leader.position) + '</p><p class="m-small">' + escapeHTML(member.company) + '</p><button class="m-textlink cursor-interaction" data-member="' + escapeHTML(member.id) + '" aria-label="Peržiūrėti profilį: ' + escapeHTML(member.name) + '">Nario profilis</button></div></article>';
+}
+root.querySelectorAll('[data-leadership]').forEach(container => {
+  container.innerHTML = leadership.members.map(leadershipCard).join('');
+});
 function renderMembers() {
   const term = normalize(byId('memel-search').value);
   const category = byId('memel-category').value;

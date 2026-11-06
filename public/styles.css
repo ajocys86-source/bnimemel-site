@@ -207,9 +207,9 @@ html{background:#fff}body{margin:0}
 #bni-memel-complete .m-reading-copy h2{font-size:28px}
 }
 
-/* Official member portraits retain the approved card and profile grouping. */
+/* Club-supplied portraits retain the approved card and profile grouping. */
 #bni-memel-complete .m-member-art{padding:22px 0;display:block}
-#bni-memel-complete .m-member-photo{display:block;width:100%;height:260px;object-fit:cover;object-position:center top}
+#bni-memel-complete .m-member-photo{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;object-position:center top}
 #bni-memel-complete .m-member-no-photo{min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;border:1px solid #000;text-align:center;padding:24px;font-size:16px}
 #bni-memel-complete .m-member-no-photo .m-icon{width:48px;height:48px;flex-basis:48px}
 #bni-memel-complete .m-member-no-photo .m-icon svg{width:48px;height:48px}
@@ -217,3 +217,33 @@ html{background:#fff}body{margin:0}
 #bni-memel-complete .m-profile-photo{display:block;width:100%;height:auto;max-height:440px;object-fit:cover;object-position:center top}
 #bni-memel-complete .m-profile-portrait .m-member-no-photo{min-height:310px;border-top:0}
 @media(max-width:760px){#bni-memel-complete .m-profile-portrait{max-width:390px}}
+
+/* Leadership stays separate from the searchable, complete member directory. */
+#bni-memel-complete [data-view=members] .m-pagehead{padding-top:26px;padding-bottom:34px}
+#bni-memel-complete [data-view=members] .m-breadcrumb{margin-bottom:24px}
+#bni-memel-complete [data-view=members] .m-pagehead .m-lead{max-width:890px;margin-top:18px}
+#bni-memel-complete .m-leadership{padding-bottom:60px}
+#bni-memel-complete .m-leadership .m-section-head{margin-bottom:30px}
+#bni-memel-complete .m-leadership .m-section-head p{max-width:720px}
+#bni-memel-complete .m-leadership-grid{gap:34px}
+#bni-memel-complete .m-leader{min-width:0;border-bottom:1px solid #000}
+#bni-memel-complete .m-leader-art{border-bottom:3px solid #c8102e}
+#bni-memel-complete .m-leader-body{display:flex;flex-direction:column;gap:9px;padding:23px 0 20px}
+#bni-memel-complete .m-leader h3{font-size:25px}
+#bni-memel-complete .m-leader-position{color:#c8102e;font-size:18px;font-weight:600}
+#bni-memel-complete .m-leader .m-textlink{align-self:start;margin-top:6px}
+#bni-memel-complete .m-leadership-source{margin-top:24px}
+#bni-memel-complete .m-directory-heading{padding-top:45px;padding-bottom:28px;border-top:1px solid #000}
+#bni-memel-complete .m-directory-heading .m-small{margin-top:16px}
+@media(max-width:760px){
+#bni-memel-complete .m-leadership-grid{grid-template-columns:1fr;gap:36px}
+#bni-memel-complete .m-leader{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:24px;align-items:center;padding-bottom:24px}
+#bni-memel-complete .m-leader-body{padding:0}
+#bni-memel-complete .m-leader h3{font-size:23px}
+#bni-memel-complete .m-leadership{padding-bottom:40px}
+#bni-memel-complete .m-directory-heading{padding-top:34px}
+}
+@media(max-width:540px){
+#bni-memel-complete .m-leader{grid-template-columns:1fr;gap:0}
+#bni-memel-complete .m-leader-body{padding-top:20px}
+}
