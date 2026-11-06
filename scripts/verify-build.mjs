@@ -3,6 +3,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 
 const members = JSON.parse(await readFile('src/data/members.json', 'utf8'));
+const leadership = JSON.parse(await readFile('src/data/leadership.json', 'utf8'));
 
 const dist = path.resolve('dist');
 const html = await readFile(path.join(dist, 'index.html'), 'utf8');
@@ -61,8 +62,16 @@ for (const member of members) {
   assert(member.description === null || typeof member.description === 'string', `Invalid biography for ${member.id}`);
   if (member.photo) {
     assert(/^assets\/members\/[a-z0-9-]+\.(?:jpe?g|png|webp)$/.test(member.photo), `Non-local member photo: ${member.id}`);
-    assert.equal(typeof member.photoSourceUrl, 'string', `Missing photo source for ${member.id}`);
-    assert(new URL(member.photoSourceUrl).protocol === 'https:', `Invalid photo source for ${member.id}`);
+    if (member.photoSourceKind === 'club-presentation') {
+      assert.equal(member.photoSourceUrl, null, `Do not publish presentation editing links: ${member.id}`);
+      assert(member.photoSourceLabel && member.photoSourcePages?.length, `Missing club photo provenance: ${member.id}`);
+      assert(member.photoSourcePages.every(page => Number.isInteger(page) && page > 0), `Invalid source slides: ${member.id}`);
+      assert(/^[a-f0-9]{12}$/.test(member.photoVersion), `Missing photo cache version: ${member.id}`);
+      assert(member.photoWidth > 0 && member.photoHeight > 0, `Missing portrait dimensions: ${member.id}`);
+    } else {
+      assert.equal(typeof member.photoSourceUrl, 'string', `Missing photo source for ${member.id}`);
+      assert(new URL(member.photoSourceUrl).protocol === 'https:', `Invalid photo source for ${member.id}`);
+    }
     const bytes = await readFile(path.join(dist, member.photo));
     const jpeg = bytes.subarray(0, 2).toString('hex') === 'ffd8';
     const png = bytes.subarray(0, 8).toString('hex') === '89504e470d0a1a0a';
@@ -74,7 +83,17 @@ for (const member of members) {
     assert.equal(member.photoSourceUrl, null, `Unexpected missing-photo source: ${member.id}`);
   }
 }
+assert.equal(leadership.members.length, 3, 'Leadership must contain a president and two vice presidents');
+assert.equal(new Set(leadership.members.map(leader => leader.memberId)).size, 3, 'Leadership members must be distinct');
+assert.equal(leadership.members.filter(leader => leader.position === 'Prezidentas').length, 1);
+assert.equal(leadership.members.filter(leader => leader.position.startsWith('Viceprezidentė ')).length, 2);
+assert.equal(new URL(leadership.sourceUrl).hostname, 'bni.lt', 'Leadership requires an official source');
+for (const leader of leadership.members) {
+  assert(members.some(member => member.id === leader.memberId && member.photo), `Leader must have a member profile and portrait: ${leader.memberId}`);
+}
+assert.equal((content.match(/data-leadership/g) ?? []).length, 2, 'Members and About must share current leadership data');
+assert(!/canva\.com\/design\//.test(JSON.stringify(members)), 'Private presentation addresses must not be published');
 for (const text of [content, sourceScript, await readFile('src/pages/index.astro', 'utf8'), await readFile('README.md', 'utf8'), JSON.stringify(members)]) {
   assert(!/Pavyzdiniai narių duomenys|pavyzdiniai narių duomenys|Pavyzdinis nario profilis|Pavyzdiniai narių profiliai|Vardas Pavardė|Nario pavyzdys/.test(text), 'Sample member content remains');
 }
-console.log(`Verified ${views.length} views, ${members.length} official members, ${memberPhotos} local member photos, ${assets.length} club photos, unique IDs, navigation, asset paths (${base}), palette and demo form guards.`);
+console.log(`Verified ${views.length} views, ${members.length} official members, ${memberPhotos} local member photos, ${leadership.members.length} verified leaders, ${assets.length} club photos, unique IDs, navigation, asset paths (${base}), palette and demo form guards.`);
